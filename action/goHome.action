@@ -1,0 +1,8 @@
+# Define the goal
+std_msgs/Float64[] goalPose  # Specify which dishwasher we want to use
+---
+# Define the result
+std_msgs/Bool Reached
+---
+# Define a feedback message
+std_msgs/Float64[] currentPose

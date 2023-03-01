@@ -1,0 +1,33 @@
+has object moved?
+
+set home poses (1st server)
+
+after reached home, 
+
+start sweeping (2nd server)
+
+after theta is set, 
+
+set top position (3rd server)
+
+after set
+
+go ahead(4th server)
+
+after reached top of object
+
+go down (5th server)
+
+after down
+
+grip(6th server)
+
+after gripped
+
+go to home2(7th server)
+
+go down (5th server 2nd time)
+
+release()
+
+repeat()

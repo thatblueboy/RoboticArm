@@ -19,11 +19,13 @@ class PID():
         self.enable = rospy.Publisher('/sweep_pid/pid_enable', Bool, queue_size= 10)
         self.enable.publish(enable)
 
+        self.setpointPublisher = rospy.Publisher('/sweep_pid/setpoint', Float64, queue_size= 10)
         self.statePublisher = rospy.Publisher('/sweep_pid/state', Float64, queue_size= 10)
         rospy.spin()
 
     def publish(self, Coords):
         self.state = Coords.x
+        self.setpointPublisher.publish(self.goalx)
         self.statePublisher.publish(self.state)
 
 if __name__=='__main__':

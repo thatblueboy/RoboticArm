@@ -1,0 +1,8 @@
+# Define the goal
+std_msgs/Float64[] TopPose  
+---
+# Define the result
+std_msgs/Bool Top
+---
+# Define a feedback message
+std_msgs/Float64[] currentPose
