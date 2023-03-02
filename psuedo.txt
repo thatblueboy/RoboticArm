@@ -2,7 +2,7 @@ has object moved?
 
 set home poses (1st server)
 
-after reached home, 
+after reached home
 
 start sweeping (2nd server)
 

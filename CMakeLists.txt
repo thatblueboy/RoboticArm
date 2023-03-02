@@ -19,6 +19,10 @@ add_action_files(
   FILES 
   goHome.action
   Sweep.action
+  goAhead.action
+  goDown.action
+  CV.action
+  
   )
 
 

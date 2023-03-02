@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-from robotic_arm_quark.msg import goHomeAction
+from robotic_arm_quark.msg import goHomeAction  # what is this importing??
 import actionlib
 import rospy
 from geometry_msgs.msg import Point
 from std_msgs.msg import Float64MultiArray, Bool, Float64
 import roslib
-roslib.load_manifest('my_pkg_name')
+roslib.load_manifest('robotic_arm_quark')
 
 
 class goHomeServer:
@@ -15,23 +15,31 @@ class goHomeServer:
             'go_home', goHomeAction, self.execute, False)
         self.server.start()
 
-        self.pose = [0, 0, 0, 0, 0]
+        self.goalPose = [0, 0, 0, 0, 0]  # change goal pose from here
 
-    def execute(self, goal):
-        Controller()
+    def execute(self):
+        Controller(self.goalPose)
         self.server.set_succeeded()
 
 
 class Controller:
-    def __init__(self):
+    def __init__(self, array):
         enable = Bool()
         enable = True
+
+        self.stateArray = [0, 0, 0, 0, 0]
 
         self.theta1 = Float64()
         self.theta2 = Float64()
         self.theta3 = Float64()
         self.theta4 = Float64()
         self.theta5 = Float64()
+
+        self.theta1 = array[0]
+        self.theta2 = array[1]
+        self.theta3 = array[2]
+        self.theta4 = array[3]
+        self.theta5 = array[4]
 
         self.goalArray = [self.theta1,
                           self.theta2,
@@ -50,6 +58,7 @@ class Controller:
         self.enableMotor5 = rospy.Publisher(
             '/motor5/pid_enable', Bool, queue_size=10)
 
+        # start PIDs
         self.enableMotor1.publish(enable)
         self.enableMotor2.publish(enable)
         self.enableMotor3.publish(enable)
@@ -81,16 +90,28 @@ class Controller:
         while not rospy.is_shutdown:
             rospy.Subscriber('/feedback', Float64MultiArray, self.sendToPID)
             if self.reached():
+                enable = False
+
+                # terminate PIDs
+                self.enableMotor1.publish(enable)
+                self.enableMotor2.publish(enable)
+                self.enableMotor3.publish(enable)
+                self.enableMotor4.publish(enable)
+                self.enableMotor5.publish(enable)
+
+                # exit from class
                 break
 
     def sendToPID(self, array):
-
+        # publish state(curent angles)
+        self.state = array
         self.statePublisherMotor1.publish(array[0])
         self.statePublisherMotor2.publish(array[1])
         self.statePublisherMotor3.publish(array[2])
         self.statePublisherMotor4.publish(array[3])
         self.statePublisherMotor5.publish(array[4])
 
+        # publish goal
         self.setpointPublisherMotor1.publish(self.goalArray[0])
         self.setpointPublisherMotor2.publish(self.goalArray[0])
         self.setpointPublisherMotor3.publish(self.goalArray[0])
@@ -98,7 +119,10 @@ class Controller:
         self.setpointPublisherMotor5.publish(self.goalArray[0])
 
     def reached(self):
-        pass
+        if abs(self.stateArray[0] - self.goalArray[0]) < 0.4 and abs(self.stateArray[0] - self.goalArray[0]) and abs(self.stateArray[0] - self.goalArray[0]) and abs(self.stateArray[0] - self.goalArray[0]) and abs(self.stateArray[0] - self.goalArray[0]):
+            return True
+        
+
 
 
 if __name__ == '__main__':
