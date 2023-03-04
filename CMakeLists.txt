@@ -22,7 +22,9 @@ add_action_files(
   goAhead.action
   goDown.action
   CV.action
-  
+  setTop.action
+  grip.action
+  visualSurvey.action
   )
 
 

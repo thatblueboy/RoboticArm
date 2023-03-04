@@ -1,8 +1,8 @@
 # Define the goal
-std_msgs/Float64[] goalPose
+std_msgs/Float64[] SweepPose 
 ---
 # Define the result
-std_msgs/Bool Reached
+std_msgs/Bool recognised
 ---
 # Define a feedback message
 std_msgs/Float64[] currentPose

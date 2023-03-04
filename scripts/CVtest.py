@@ -10,13 +10,12 @@ import roslib
 roslib.load_manifest('robotic_arm_quark')
 
 
-class sweep_server:
+class CVtestServer:
     def __init__(self):
 
         self.server = actionlib.SimpleActionServer(
-            'cv', CVAction, self.execute, False)
+            'cv_actionServer', CVAction, self.execute, False)
         self.server.start()
-
         self.pose = [640, 360]
 
     def execute(self, goal):
@@ -53,12 +52,11 @@ class Controller():
                 # terminate PIDs
                 self.cam1.publish(enable)
                 self.cam2.publish(enable)
-
                 # exit from class
                 break
 
-    def reached(self,coords):
-        if  abs((self.x - self.goal[0])<10) and abs((self.y - self.goal[1])<10):
+    def reached(self):
+        if abs((self.x - self.goal[0]) < 10) and abs((self.y - self.goal[1]) < 10):
             return True
 
     def sendToPID(self, coords):
@@ -71,13 +69,7 @@ class Controller():
         self.setpointPublisher1.publish(self.goal[0])
         self.setpointPublisher2.publish(self.goal[1])
 
-
-
-
-
-
-
 if __name__ == '__main__':
     rospy.init_node('CV_test')
-    server = CVServer()
+    server = CVtestServer()
     rospy.spin()

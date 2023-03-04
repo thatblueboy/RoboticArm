@@ -14,9 +14,11 @@ after set
 
 go ahead(4th server)
 
-after reached top of object
+after object comes in frame
 
-go down (5th server)
+refine coordinates(5th server)
+
+go down (6th server)
 
 after down
 

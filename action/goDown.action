@@ -2,7 +2,7 @@
 std_msgs/Float64[] stopPose   
 ---
 # Define the result
-std_msgs/Bool recognised
+std_msgs/Bool Reached
 ---
 # Define a feedback message
 std_msgs/Float64[] currentPose

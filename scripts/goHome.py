@@ -14,7 +14,6 @@ class goHomeServer:
         self.server = actionlib.SimpleActionServer(
             'go_home', goHomeAction, self.execute, False)
         self.server.start()
-
         self.goalPose = [0, 0, 0, 0, 0]  # change goal pose from here
 
     def execute(self):
@@ -119,13 +118,11 @@ class Controller:
         self.setpointPublisherMotor5.publish(self.goalArray[0])
 
     def reached(self):
-        if abs(self.stateArray[0] - self.goalArray[0]) < 0.4 and abs(self.stateArray[0] - self.goalArray[0]) and abs(self.stateArray[0] - self.goalArray[0]) and abs(self.stateArray[0] - self.goalArray[0]) and abs(self.stateArray[0] - self.goalArray[0]):
+        if abs(self.stateArray[0] - self.goalArray[0]) < 0.4 and abs(self.stateArray[1] - self.goalArray[1] < 0.4) and abs(self.stateArray[2] - self.goalArray[2])<0.4 and abs(self.stateArray[3] - self.goalArray[3])<0.4 and abs(self.stateArray[0] - self.goalArray[0]):
             return True
-        
-
 
 
 if __name__ == '__main__':
-    rospy.init_node('do_dishes_server')
+    rospy.init_node('goHome_server')
     server = goHomeServer()
     rospy.spin()

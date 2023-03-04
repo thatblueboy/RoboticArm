@@ -8,7 +8,7 @@ from robotic_arm_quark.msg import goDownAction
 
 
 
-class sweep_server:
+class goDown_server:
   def __init__(self):
     self.server = actionlib.SimpleActionServer('go_Down', goDownAction, self.execute, False)
     self.server.start()
@@ -21,5 +21,5 @@ class sweep_server:
 
 if __name__ == '__main__':
   rospy.init_node('do_dishes_server')
-  server = goDownServer()
+  server = goDown_server()
   rospy.spin()

@@ -9,7 +9,7 @@ from robotic_arm_quark.msg import gripAction
 
 
 
-class sweep_server:
+class grip_server:
   def __init__(self):
     self.server = actionlib.SimpleActionServer('grip', gripAction, self.execute, False)
     self.server.start()
@@ -19,8 +19,7 @@ class sweep_server:
 #   def execute(self, goal):
 #     self.server.set_succeeded()
 
-
 if __name__ == '__main__':
   rospy.init_node('do_dishes_server')
-  server = gripServer()
+  server = grip_server()
   rospy.spin()
