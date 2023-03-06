@@ -1,22 +1,22 @@
 has object moved?
 
-set home poses (1st server)
+set home poses (1st server) (I wrote this, self.publsidh probably cant be inside a loop)
 
 after reached home
 
-start sweeping (2nd server)
+start sweeping (2nd server) (Harsh wrote this,havent checked yet)
 
 after theta is set, 
 
-set top position (3rd server)
+set top position (3rd server) (same as home pose code)
 
 after set
 
-go ahead(4th server)
+go ahead(4th server)  (Ninaad, need to find more modular IK)
 
 after object comes in frame
 
-refine coordinates(5th server)
+refine coordinates(5th server) 
 
 go down (6th server)
 

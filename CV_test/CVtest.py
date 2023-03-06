@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import cv2
-import numpy
 import imutils
+import numpy
 import rospy
+from cv_bridge import CvBridge
 from sensor_msgs.msg import Image as img
 # from cv_bridge import CvBridge
 from std_msgs.msg import Float64MultiArray
@@ -11,23 +12,24 @@ from std_msgs.msg import Float64MultiArray
 
 class ComputerVision():
     def __init__(self):
-        self.cap = cv2.VideoCapture(0)
+        # self.cap = cv2.VideoCapture(0)
         rospy.init_node('CV', anonymous=True)
-        # self.cx=0
-        # self.cy=0
-        # self.cv = 0
-        # self.frame
-        # self.pub = rospy.Publisher(
-        #     "/feedback", Float64MultiArray, queue_size=1)
-        # self.bridge = CvBridge()
-        # self.sub = rospy.Subscriber('/coords', Point, self.getCoords)
-        # rospy.Subscriber("video_frame3/image", img, self.findCoords)
-        # self.pub = rospy.Publisher('/centroid_coordinates', Point, queue_size= 10)
-        # rospy.spin()
-        self.findCoords()
+        self.bridge = CvBridge()
 
-    def findCoords(self):
-        _, frame = self.cap.read()
+        self.pub = rospy.Publisher(
+            "/feedback", Float64MultiArray, queue_size=1)
+
+        rospy.Subscriber("/usb_cam/image_raw", img, self.findCoords)
+
+        rospy.spin()
+
+    def findCoords(self, image):
+        # _, frame = self.cap.read()
+        image = self.bridge.imgmsg_to_cv2(
+            image, desired_encoding="passthrough")
+        frame = image
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+
         blurred = cv2.GaussianBlur(frame, (35, 35), 0)
         dimensions = frame.shape
         goalx = dimensions[0]/2
@@ -64,9 +66,9 @@ class ComputerVision():
 
                 cv2.circle(frame, (cx, cy), 5, (150, 0, 240), -1)
                 current = Float64MultiArray()
-                current = [[cx, cy]]
+                current.data = [cx, cy]
                 self.pub.publish(current)
-                # print(cx,cy)
+                print(cx,cy)
 
         cv2.imshow("Window", frame)
         cv2.imshow("Window2", thresh)
@@ -76,5 +78,4 @@ class ComputerVision():
 
 
 if __name__ == '__main__':
-    obj = ComputerVision()
-    obj
+    ComputerVision()

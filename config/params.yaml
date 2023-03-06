@@ -1,2 +1,3 @@
-goalx: 0
-goaly: 0
+camfeed_centre_x: 320
+camfeed_centre_y: 180
+pick_height: 10

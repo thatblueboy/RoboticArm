@@ -1,3 +1,3 @@
 <launch>
-<rosparam command = "load" file = "$(find robotic_arm_quark)/config/params.yaml" />
+    <rosparam command="load" file="$(find robotic_arm_quark)/config/params.yaml" />
 </launch>

@@ -1,11 +1,17 @@
+import roslib
 import rospy
 from geometry_msgs.msg import Point
-import roslib
+
 roslib.load_manifest('my_pkg_name')
 import actionlib
-from robotic_arm_quark.msg import visualServeyAction
-from std_msgs.msg import Float64MultiArray, Bool, Float64
+from std_msgs.msg import Bool, Float64, Float64MultiArray
 
+from robotic_arm_quark.msg import visualServeyAction
+
+# subscribe to /feedback coming from camera , this provides x and y of contour appearing in frame. apply individual pids for
+# x and y, setpoints would becentre of cameraframe(rosparam has been made for the same) no need to publish anywhere, that is 
+# handled by the pid package.
+# if both x and y are within a error range from centre of frame, service success, turn off pids,job done
 
 
 class visualSurvey_server:

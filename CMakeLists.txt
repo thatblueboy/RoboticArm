@@ -17,11 +17,12 @@ add_action_files(
   action 
   
   FILES 
+  Fibonacci.action
   goHome.action
   Sweep.action
   goAhead.action
   goDown.action
-  CV.action
+  CVtest.action
   setTop.action
   grip.action
   visualSurvey.action

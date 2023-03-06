@@ -2,78 +2,77 @@
 
 <launch>
 
-<node name="controller" pkg="pid" type="controller" ns="sweep_pid" output="screen" >
-      <param name="node_name" value="sweep_pid" />
-      <param name="Kp" value="5.0" />
-      <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.1" />
-      <param name="upper_limit" value="10" />
-      <param name="lower_limit" value="-10" />
-      <param name="windup_limit" value="10" />
-      <param name="max_loop_frequency" value="100.0" />
-      <param name="min_loop_frequency" value="100.0" />
-     </node>
+      <node name="controller" pkg="pid" type="controller" ns="sweep_pid" output="screen">
+            <param name="node_name" value="sweep_pid" />
+            <param name="Kp" value="5.0" />
+            <param name="Ki" value="0.0" />
+            <param name="Kd" value="0.1" />
+            <param name="upper_limit" value="10" />
+            <param name="lower_limit" value="-10" />
+            <param name="windup_limit" value="10" />
+            <param name="max_loop_frequency" value="100.0" />
+            <param name="min_loop_frequency" value="100.0" />
+      </node>
 
-<node name="controller" pkg="pid" type="controller" ns="motor1" output="screen" >
-      <param name="node_name" value="sweep_pid" />
-      <param name="Kp" value="5.0" />
-      <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.1" />
-      <param name="upper_limit" value="10" />
-      <param name="lower_limit" value="-10" />
-      <param name="windup_limit" value="10" />
-      <param name="max_loop_frequency" value="100.0" />
-      <param name="min_loop_frequency" value="100.0" />
-     </node>
+      <node name="controller" pkg="pid" type="controller" ns="motor1" output="screen">
+            <param name="node_name" value="sweep_pid" />
+            <param name="Kp" value="5.0" />
+            <param name="Ki" value="0.0" />
+            <param name="Kd" value="0.1" />
+            <param name="upper_limit" value="10" />
+            <param name="lower_limit" value="-10" />
+            <param name="windup_limit" value="10" />
+            <param name="max_loop_frequency" value="100.0" />
+            <param name="min_loop_frequency" value="100.0" />
+      </node>
 
-<node name="controller" pkg="pid" type="controller" ns="motor2" output="screen" >
-      <param name="node_name" value="sweep_pid" />
-      <param name="Kp" value="5.0" />
-      <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.1" />
-      <param name="upper_limit" value="10" />
-      <param name="lower_limit" value="-10" />
-      <param name="windup_limit" value="10" />
-      <param name="max_loop_frequency" value="100.0" />
-      <param name="min_loop_frequency" value="100.0" />
-     </node>
+      <node name="controller" pkg="pid" type="controller" ns="motor2" output="screen">
+            <param name="node_name" value="sweep_pid" />
+            <param name="Kp" value="5.0" />
+            <param name="Ki" value="0.0" />
+            <param name="Kd" value="0.1" />
+            <param name="upper_limit" value="10" />
+            <param name="lower_limit" value="-10" />
+            <param name="windup_limit" value="10" />
+            <param name="max_loop_frequency" value="100.0" />
+            <param name="min_loop_frequency" value="100.0" />
+      </node>
 
-<node name="controller" pkg="pid" type="controller" ns="motor3" output="screen" >
-      <param name="node_name" value="sweep_pid" />
-      <param name="Kp" value="5.0" />
-      <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.1" />
-      <param name="upper_limit" value="10" />
-      <param name="lower_limit" value="-10" />
-      <param name="windup_limit" value="10" />
-      <param name="max_loop_frequency" value="100.0" />
-      <param name="min_loop_frequency" value="100.0" />
-     </node>
+      <node name="controller" pkg="pid" type="controller" ns="motor3" output="screen">
+            <param name="node_name" value="sweep_pid" />
+            <param name="Kp" value="5.0" />
+            <param name="Ki" value="0.0" />
+            <param name="Kd" value="0.1" />
+            <param name="upper_limit" value="10" />
+            <param name="lower_limit" value="-10" />
+            <param name="windup_limit" value="10" />
+            <param name="max_loop_frequency" value="100.0" />
+            <param name="min_loop_frequency" value="100.0" />
+      </node>
 
-<node name="controller" pkg="pid" type="controller" ns="motor4" output="screen" >
-      <param name="node_name" value="sweep_pid" />
-      <param name="Kp" value="5.0" />
-      <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.1" />
-      <param name="upper_limit" value="10" />
-      <param name="lower_limit" value="-10" />
-      <param name="windup_limit" value="10" />
-      <param name="max_loop_frequency" value="100.0" />
-      <param name="min_loop_frequency" value="100.0" />
-     </node>
+      <node name="controller" pkg="pid" type="controller" ns="motor4" output="screen">
+            <param name="node_name" value="sweep_pid" />
+            <param name="Kp" value="5.0" />
+            <param name="Ki" value="0.0" />
+            <param name="Kd" value="0.1" />
+            <param name="upper_limit" value="10" />
+            <param name="lower_limit" value="-10" />
+            <param name="windup_limit" value="10" />
+            <param name="max_loop_frequency" value="100.0" />
+            <param name="min_loop_frequency" value="100.0" />
+      </node>
 
-<node name="controller" pkg="pid" type="controller" ns="motor5" output="screen" >
-      <param name="node_name" value="sweep_pid" />
-      <param name="Kp" value="5.0" />
-      <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.1" />
-      <param name="upper_limit" value="10" />
-      <param name="lower_limit" value="-10" />
-      <param name="windup_limit" value="10" />
-      <param name="max_loop_frequency" value="100.0" />
-      <param name="min_loop_frequency" value="100.0" />
-     </node>
- 
+      <node name="controller" pkg="pid" type="controller" ns="motor5" output="screen">
+            <param name="node_name" value="sweep_pid" />
+            <param name="Kp" value="5.0" />
+            <param name="Ki" value="0.0" />
+            <param name="Kd" value="0.1" />
+            <param name="upper_limit" value="10" />
+            <param name="lower_limit" value="-10" />
+            <param name="windup_limit" value="10" />
+            <param name="max_loop_frequency" value="100.0" />
+            <param name="min_loop_frequency" value="100.0" />
+      </node>
 
 
 </launch>

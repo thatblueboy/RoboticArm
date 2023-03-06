@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
-from robotic_arm_quark.msg import goHomeAction  # what is this importing??
+from robotic_arm_quark.msg import goHomeAction,goHomeFeedback # what is this importing??
 import actionlib
 import rospy
 from geometry_msgs.msg import Point
 from std_msgs.msg import Float64MultiArray, Bool, Float64
 import roslib
 roslib.load_manifest('robotic_arm_quark')
-
 
 class goHomeServer:
     def __init__(self):
@@ -18,6 +17,9 @@ class goHomeServer:
 
     def execute(self):
         Controller(self.goalPose)
+        feedback = goHomeFeedback()
+        feedback.currentPose = self.goalPose
+        self.server.publish_feedback(feedback)
         self.server.set_succeeded()
 
 

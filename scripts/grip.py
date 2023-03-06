@@ -16,8 +16,8 @@ class grip_server:
 
     self.pose = [0, 0, 0, 0, 0]
 
-#   def execute(self, goal):
-#     self.server.set_succeeded()
+  def execute(self, goal):
+    self.server.set_succeeded()
 
 if __name__ == '__main__':
   rospy.init_node('do_dishes_server')
