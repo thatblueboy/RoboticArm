@@ -16,8 +16,7 @@ class ComputerVision():
         rospy.init_node('CV', anonymous=True)
         self.bridge = CvBridge()
 
-        self.pub = rospy.Publisher(
-            "/feedback", Float64MultiArray, queue_size=1)
+        self.pub = rospy.Publisher("/feedback", Float64MultiArray, queue_size=1)
 
         rospy.Subscriber("/usb_cam/image_raw", img, self.findCoords)
 

@@ -7,7 +7,7 @@ while(True):
         call_server2() - sweep_server
         call_server3() - set_top_Server
         call_server4() - goAhead_Server
-        call_server5() - centralize
+        call_server5() - visualSurvey
         call_server6() - goDown_server
         call_server7(on) - grip_server
         call_server1() - goHomeServer 

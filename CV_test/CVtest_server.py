@@ -14,6 +14,9 @@ roslib.load_manifest('robotic_arm_quark')
 class CVtestServer:
     def __init__(self):
         rospy.loginfo("hello")
+        # code added
+        _feedback = CVtestAction.msg.FibonacciFeedback()
+        _result = CVtestAction.msg.FibonacciResult()
 
         self.server = actionlib.SimpleActionServer(
             'cv_actionServer', CVtestAction, self.execute, False)
@@ -26,12 +29,18 @@ class CVtestServer:
 
     def execute(self, goal):
         rospy.loginfo("in callback")
-
+        # code added
+        self._result.sequence = []
+        self._result.sequence.append(goal[0])
+        self._result.sequence.append(goal[1])
         # print('execute')
         Controller(self.goal)
 
         # need to add a result and publish it back
-        self.server.set_succeeded()
+        rospy.loginfo('%s: Succeeded' % self._action_name)
+        self.server.set_succeeded(self._result)
+    
+
 
 
 class Controller():
@@ -62,9 +71,9 @@ class Controller():
             'CV_pidx/state', Float64, queue_size=10)
         self.statePublisher2 = rospy.Publisher(
             'CV_pidy/state', Float64, queue_size=10)
+        rospy.Subscriber('/feedback', Float64MultiArray, self.sendToPID)
 
         while not rospy.is_shutdown():
-            rospy.Subscriber('/feedback', Float64MultiArray, self.sendToPID)
 
             if self.reached():
                 rospy.loginfo('reached')

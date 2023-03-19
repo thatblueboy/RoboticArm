@@ -26,13 +26,15 @@ def call_server():
 
         client.wait_for_result()
         print("successful")
+        return client.get_result()
 
 
 if __name__ == '__main__':
     try:
         # Initializes a rospy node so that the SimpleActionClient can
         rospy.init_node('cv_node', anonymous=False)
-        call_server()
+        result=call_server()
+        print(result)
 
     except rospy.ROSInterruptException:
         print("program interrupted before completion")
