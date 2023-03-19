@@ -57,7 +57,7 @@ class goAhead_Server:
                 target_theta2 = acos(
                     ((x*self.x)+(y*y)-(self.l2*self.l2)-(self.l1*self.l1))/(2*self.l1*self.l2))
                 target_theta1 = atan(
-                    y/x)-atan(self.l2*sin(theta2)/(self.l1+self.l2*cos(theta2)))
+                    y/x)-atan(self.l2*sin(self.theta2)/(self.l1+self.l2*cos(theta2)))
             else:
                 target_theta2 = -1 * \
                     acos(((x*self.x)+(y*y)-(self.l2*self.l2) -
