@@ -32,8 +32,9 @@ class ComputerVision():
 
         blurred = cv2.GaussianBlur(frame, (35, 35), 0)
         dimensions = frame.shape
-        goalx = dimensions[0]/2
-        goaly = dimensions[1]/2
+        rospy.set_param('camfeed_centre_x',dimensions[0]/2)
+        rospy.set_param('camfeed_centre_y',dimensions[1]/2)
+ 
         # print(type(dimensions))
         # print(dimensions)
 
@@ -68,7 +69,7 @@ class ComputerVision():
                 current = Float64MultiArray()
                 current.data = [cx, cy]
                 self.pub.publish(current)
-                print(cx,cy)
+                print(cx, cy)
 
         rospy.loginfo('true')
         cv2.imshow("Window", frame)

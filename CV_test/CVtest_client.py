@@ -20,12 +20,19 @@ def call_server():
         rospy.loginfo('server started')
 
         goal = CVtestGoal()
+        # array = [200, 200]
+        x = Float64()
+        x.data = rospy.get_param('camfeed_centre_x')
+
+        y = Float64()
+        y.data = rospy.get_param('camfeed_centre_y')
+
+        goal.centreOfFrame = [x, y]
+        # print(goal)
 
         client.send_goal(goal)
 
-
         client.wait_for_result()
-        print("successful")
         return client.get_result()
 
 
@@ -33,7 +40,7 @@ if __name__ == '__main__':
     try:
         # Initializes a rospy node so that the SimpleActionClient can
         rospy.init_node('cv_node', anonymous=False)
-        result=call_server()
+        result = call_server()
         print(result)
 
     except rospy.ROSInterruptException:

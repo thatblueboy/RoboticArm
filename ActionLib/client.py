@@ -17,10 +17,11 @@ def fibonacci_client():
     client.wait_for_server()
 
    
-    goal = FibonacciGoal(order=20)
-
+    goal = FibonacciGoal()
+    goal.order = 20
  
     client.send_goal(goal)
+    print("goal sent")
 
     
     client.wait_for_result()

@@ -18,12 +18,13 @@ class FibonacciAction():
    
     def execute_cb(self, goal):
         print('hello')
+        print("goal")
         # # helper variables
         # r = rospy.Rate(20)
         success = True
 
         # # append the seeds for the fibonacci sequence
-        # self._feedback.sequence = []
+        self._feedback.sequence = []
         # self._feedback.sequence.append(0)
         # self._feedback.sequence.append(1)
 

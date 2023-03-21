@@ -67,7 +67,7 @@ class ComputerVision():
                 current = Float64MultiArray()
                 current.data = [cx, cy]
                 self.pub.publish(current)
-                print(cx,cy)
+                # print(cx,cy)
 
         cv2.imshow("Window", frame)
         cv2.imshow("Window2", thresh)

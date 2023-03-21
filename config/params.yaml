@@ -1,3 +1,16 @@
 camfeed_centre_x: 320
 camfeed_centre_y: 180
 pick_height: 10
+
+link1: 10
+link2: 10
+
+x: 0
+z: 5
+
+home_theta_1: 0
+home_theta_2: 0
+home_theta_3: 0
+home_theta_4: 0
+home_theta_5: 0
+home_theta_6: 0

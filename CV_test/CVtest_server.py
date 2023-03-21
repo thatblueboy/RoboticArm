@@ -6,7 +6,7 @@ import rospy
 from geometry_msgs.msg import Point
 from std_msgs.msg import Bool, Float64, Float64MultiArray
 
-from robotic_arm_quark.msg import CVtestAction
+from robotic_arm_quark.msg import CVtestAction, CVtestFeedback, CVtestResult
 
 roslib.load_manifest('robotic_arm_quark')
 
@@ -15,32 +15,33 @@ class CVtestServer:
     def __init__(self):
         rospy.loginfo("hello")
         # code added
-        _feedback = CVtestAction.msg.FibonacciFeedback()
-        _result = CVtestAction.msg.FibonacciResult()
+        self.feedback = CVtestFeedback()
+        self.result = CVtestResult()
 
         self.server = actionlib.SimpleActionServer(
             'cv_actionServer', CVtestAction, self.execute, False)
 
         self.server.start()
-        x = rospy.get_param("camfeed_centre_x")
-        y = rospy.get_param("camfeed_centre_y")
+        # x = rospy.get_param("camfeed_centre_x")
+        # y = rospy.get_param("camfeed_centre_y")
 
-        self.goal = [x, y]
+        # self.goal = [x, y]
 
     def execute(self, goal):
         rospy.loginfo("in callback")
-        # code added
-        self._result.sequence = []
-        self._result.sequence.append(goal[0])
-        self._result.sequence.append(goal[1])
+        rospy.loginfo(goal)
+        rospy.loginfo("goal printed")
+        x = goal.centreOfFrame[0].data
+        y = goal.centreOfFrame[1].data
+        goal = [x, y]
+        
         # print('execute')
-        Controller(self.goal)
+        # Controller(goal)
 
-        # need to add a result and publish it back
-        rospy.loginfo('%s: Succeeded' % self._action_name)
-        self.server.set_succeeded(self._result)
-    
-
+        # # need to add a result and publish it back
+        rospy.loginfo('%s: Succeeded' % "CVtestserver")
+        self.result.Reached.data = True
+        self.server.set_succeeded(self.result)
 
 
 class Controller():
@@ -51,6 +52,7 @@ class Controller():
         self.y = 0
 
         self.goal = goal
+        rospy.loginfo(self.goal)
         enable = Bool()
         enable = True
 
@@ -87,6 +89,7 @@ class Controller():
 
     def reached(self):
         rospy.loginfo('x diff is %i' % (self.x - self.goal[0]))
+        rospy.loginfo(self.goal)
 
         if abs((self.x - self.goal[0])) < 10 and abs((self.y - self.goal[1])) < 10:
             return True
@@ -110,3 +113,4 @@ class Controller():
 if __name__ == '__main__':
     rospy.init_node('CV_test')
     server = CVtestServer()
+0

@@ -25,8 +25,8 @@ class goAhead_Server:
         rospy.spin()
 
     def execute(self, goal):
-        l1 = 1
-        l2 = 2
+        l1 = rospy.get_param('/link1')
+        l2 = rospy.get_param('/link2')
         goAhead(l1, l2)
 
         self.server.set_succeeded()
@@ -88,6 +88,8 @@ class goAhead():
         while not rospy.is_shutdown:
             if self.reached:
                 # exit from class
+                rospy.set_param('/x', self.x)
+
                 break
 
     def getState2(self, theta2):

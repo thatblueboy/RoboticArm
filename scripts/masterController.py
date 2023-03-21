@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
-from robotic_arm_quark.msg import CVAction, goHomeAction, SweepAction, setTopAction, goAheadAction, goDownAction, gripAction,goHomeActionFeedback,goAheadActionResult
-import robotic_arm_quark.msg
 import actionlib
+import roslib
 import rospy
 from geometry_msgs.msg import Point
-from std_msgs.msg import Float64, Bool
-import roslib
+from std_msgs.msg import Bool, Float64
+
+import robotic_arm_quark.msg
+from robotic_arm_quark.msg import (CVAction, SweepAction, goAheadAction,
+                                   goAheadActionResult, goDownAction,
+                                   goHomeAction, goHomeActionFeedback,
+                                   gripAction, setTopAction)
+
 roslib.load_manifest('my_pkg_name')
 # refer server.txt for each server functionality
+
+
 def feedback_cb(msg):
-    print("feedback recieved : ",msg)
+    print("feedback recieved : ", msg)
 
 
 # def call_CVserver():
@@ -25,10 +32,23 @@ def goHomeServer():
     client = actionlib.SimpleActionClient(
         'go_home', robotic_arm_quark.msg.goHomeAction)
     client.wait_for_server()
-    client.send_goal(feedback_cb = feedback_cb)
+
+    theta1 = Float64()
+    theta2 = Float64()
+    theta3 = Float64()
+    theta4 = Float64()
+    theta5 = Float64()
+    theta6 = Float64()
+
+    theta1.data, theta2.data, theta3.data, theta4.data, theta5.data, theta6.data = rospy.get_param('home_theta_1'), rospy.get_param(
+        'home_theta_2'), rospy.get_param('home_theta_3'), rospy.get_param('home_theta_4'), rospy.get_param('home_theta_5'), rospy.get_param('home_theta_6')
+
+    goal = robotic_arm_quark.msg.goHomeGoal()
+    goal = [theta1, theta2, theta3, theta4, theta5, theta6]
+    client.send_goal(goal)
     client.wait_for_result()
-    # result = client.getresult()   then return result
-    return 0
+   
+    return client.getresult()
 
 
 def sweep_server():
@@ -44,16 +64,32 @@ def set_top_Server():
     client = actionlib.SimpleActionClient(
         'set_Top', robotic_arm_quark.msg.setTopAction)
     client.wait_for_server()
+
+    
+    theta1 = Float64()
+    theta2 = Float64()
+    theta3 = Float64()
+    theta4 = Float64()
+    theta5 = Float64()
+    theta6 = Float64()
+
+    theta1.data, theta2.data, theta3.data, theta4.data, theta5.data, theta6.data = rospy.get_param('top_theta_1'), rospy.get_param(
+        'top_theta_2'), rospy.get_param('top_theta_3'), rospy.get_param('top_theta_4'), rospy.get_param('top_theta_5'), rospy.get_param('top_theta_6')
+    
+    goal = robotic_arm_quark.msg.goHomeGoal()
+    goal = [theta1, theta2, theta3, theta4, theta5, theta6]
+    client.send_goal(goal)
+
     client.wait_for_result()
     # result = client.getresult()   then return result
-    return 0
+    return client.getresult()
 
 
 def goAhead_Server():
     client = actionlib.SimpleActionClient(
         'go_Ahead', robotic_arm_quark.msg.goAheadAction)
     client.wait_for_server()
-    client.wait_for_result()
+    reached = client.wait_for_result()
     # result = client.getresult()   then return result
     return 0
 
@@ -67,55 +103,58 @@ def goDown_server():
     return 0
 
 
-def grip_server():
+def grip_server(goal):
     client = actionlib.SimpleActionClient(
         'grip', robotic_arm_quark.msg.gripAction)
     client.wait_for_server()
+    client.send_goal(goal)
     client.wait_for_result()
     # result = client.getresult()   then return result
     return 0
+
 
 def visualServey():
     pass
 
 
 def mastercontroller():
-    while not rospy.is_shutdown():    
-        rospy.init_node('goHome', anonymous=False)
-        goHomeServer()
-        print("successful goAhead")
-        rospy.init_node('sweep', anonymous=False)
+    while not rospy.is_shutdown():
+        result = goHomeServer()
+        if result.Reached.data == True:
+            print("Reached Home pose")
+
         sweep_server()
         print("successful sweep")
-        rospy.init_node('setTop', anonymous=False)
+
         set_top_Server()
         print("successful setTopAction")
-        rospy.init_node('goAhead', anonymous=False)
+
         goAhead_Server()
         print("successful goAheadAction")
-        rospy.init_node('visualServey', anonymous=False)
+
         visualServey()
-        rospy.init_node('goDown', anonymous=False)
+
         goDown_server()
         print("successful go_Down")
-        rospy.init_node('gripServer', anonymous=False)
-        grip_server()
+
+        goal = [0]
+        grip_server(goal)
         print("successful gripAction")
         goHomeServer()
         print("successful goAhead call2")
         goDown_server()
         print("successful go_Down call2")
-        grip_server()
+        goal = [1]
+        grip_server(goal)
         print("successful gripAction call2")
         goHomeServer()
         print("successful goAhead call3")
-        
-
 
 
 if __name__ == '__main__':
-    
+
     try:
+        rospy.init_node('goHome', anonymous=False)
         mastercontroller()
     except rospy.ROSInterruptException:
         print("error in the servers")
