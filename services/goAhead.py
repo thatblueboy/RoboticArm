@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from math import acos, asin, atan, cos, sin, tan
 
 import actionlib
@@ -15,16 +17,15 @@ roslib.load_manifest('robotic_arm_quark')
 
 
 class goAhead_Server:
-    def __init__(self, cmd_vel):
+    def __init__(self):
         self.server = actionlib.SimpleActionServer(
             'go_Ahead', goAheadAction, self.execute, False)
         self.server.start()
 
-        self.pose = [0, 0, 0, 0, 0]
-
         rospy.spin()
 
     def execute(self, goal):
+        rospy.loginfo('in excute')
         l1 = rospy.get_param('/link1')
         l2 = rospy.get_param('/link2')
         goAhead(l1, l2)
@@ -34,6 +35,8 @@ class goAhead_Server:
 
 class goAhead():
     def __init__(self, l1, l2):
+        rospy.loginfo('in goAhead class')
+
         self.enable = Bool()
         self.enable = False
         self.reached = False
@@ -44,6 +47,10 @@ class goAhead():
         self.t = 0.5
         self.theta1 = 0
         self.theta2 = 0
+        self.set = 0
+        enable = Bool()
+        enable = True
+
         self.sub2 = rospy.Subscriber('/feedback', Float64, self.callback1)
 
         self.SubState2 = rospy.Subscriber(
@@ -51,15 +58,13 @@ class goAhead():
         self.SubState3 = rospy.Subscriber(
             '/motor3/state', Float64, self.getState3)
 
-        self.set = 0
-
+       
         self.enableMotor2 = rospy.Publisher(
             '/motor2/pid_enable', Bool, queue_size=10)
         self.enableMotor3 = rospy.Publisher(
             '/motor3/pid_enable', Bool, queue_size=10)
 
-        enable = Bool()
-        enable = True
+        
 
         self.enableMotor2.publish(enable)
         self.enableMotor3.publish(enable)
@@ -69,23 +74,9 @@ class goAhead():
         self.setpointPublisherMotor3 = rospy.Publisher(
             '/motor3/setpoint', Float64, queue_size=10)
 
-        # self.calculate()
-
-        # FK
-        # self.x=cos(self.theta1)+cos(self.theta2)
-        # self.y=sin(self.theta1)+sin(self.theta2)
-
-        # self.setpointPublisherMotor1 = rospy.Publisher(
-        #     '/motor1/setpoint', Float64, queue_size=10)
-        # self.setpointPublisherMotor2 = rospy.Publisher(
-        #     '/motor2/setpoint', Float64, queue_size=10)
-
-        # self.statePublisherMotor1 = rospy.Publisher(
-        #     '/motor1/state', Float64, queue_size=10)
-        # self.statePublisherMotor2 = rospy.Publisher(
-        #     '/motor2/state', Float64, queue_size=10)
-
+        rospy.loginfo('about to enter while loop')
         while not rospy.is_shutdown:
+            rospy.loginfo('in loop')
             if self.reached:
                 # exit from class
                 rospy.set_param('/x', self.x)
@@ -100,12 +91,13 @@ class goAhead():
 
     def callback1(self, data):
         coords = data.data
-        self.set = coords[0]
+        self.set = coords[1]
         self.calculate()
 
     def calculate(self):
         # IK
         # if out of frame
+        print('x %i'%self.set)
         if self.set == -1:
             theta2 = acos(((self.x*self.x)+(self.y*self.y) -
                           (self.l2*self.l2)-(self.l1*self.l1))/(2*self.l1*self.l2))
@@ -129,6 +121,6 @@ class goAhead():
 
 
 if __name__ == '__main__':
-    rospy.init_node('do_dishes_server')
+    rospy.init_node('goahead_server')
     server = goAhead_Server()
     rospy.spin()

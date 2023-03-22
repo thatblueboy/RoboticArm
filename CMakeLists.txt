@@ -19,9 +19,9 @@ add_action_files(
   FILES 
   Fibonacci.action
   goHome.action
-  Sweep.action
   goAhead.action
   goDown.action
+  sweep.action
   CVtest.action
   setTop.action
   grip.action

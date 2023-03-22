@@ -17,6 +17,7 @@ class grip_server:
     def execute(self, goal):
         controller(goal)
         self.server.set_succeeded()
+        
     
 
 class controller:

@@ -11,7 +11,7 @@ from robotic_arm_quark.msg import (CVAction, SweepAction, goAheadAction,
                                    goHomeAction, goHomeActionFeedback,
                                    gripAction, setTopAction)
 
-roslib.load_manifest('my_pkg_name')
+roslib.load_manifest('robotic_arm_quark')
 # refer server.txt for each server functionality
 
 
@@ -53,8 +53,19 @@ def goHomeServer():
 
 def sweep_server():
     client = actionlib.SimpleActionClient(
-        'sweep', robotic_arm_quark.msg.SweepAction)
+        '/sweep', robotic_arm_quark.msg.SweepAction)
+    goal = robotic_arm_quark.msg.SweepGoal()
+    x = Float64()
+    # x.data = rospy.get_param('camfeed_centre_x')
+    x.data = 320
+    goal.Xcentre = x
+    
+    
     client.wait_for_server()
+   
+    rospy.loginfo('server found')
+    client.send_goal(goal)
+
     client.wait_for_result()
     # result = client.getresult()   then return result
     return 0
@@ -84,11 +95,13 @@ def set_top_Server():
     # result = client.getresult()   then return result
     return client.getresult()
 
-
 def goAhead_Server():
     client = actionlib.SimpleActionClient(
         'go_Ahead', robotic_arm_quark.msg.goAheadAction)
     client.wait_for_server()
+    goal = robotic_arm_quark.msg.goAheadGoal()
+    client.send_goal(goal)
+
     reached = client.wait_for_result()
     # result = client.getresult()   then return result
     return 0
@@ -119,6 +132,7 @@ def visualServey():
 
 def mastercontroller():
     while not rospy.is_shutdown():
+        rospy.loginfo("client started")
         # result = goHomeServer()
         # if result.Reached.data == True:
         #     print("Reached Home pose")

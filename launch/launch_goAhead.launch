@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+
+
+    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
+
+    <node name="masterController" pkg="robotic_arm_quark" type="masterController.py"
+        output="screen" />
+
+    <node name="CV" pkg="robotic_arm_quark" type="CV.py" output="screen" />
+
+    <include file="$(find robotic_arm_quark)/launch/load_param.launch">
+    </include>
+    <include file="$(find robotic_arm_quark)/launch/launch_pid.launch">
+    </include>
+    <include file="$(find usb_cam)/launch/usb_cam-test.launch">
+    </include>
+
+
+</launch>

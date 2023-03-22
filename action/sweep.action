@@ -1,5 +1,5 @@
 # Define the goal
-std_msgs/Float64[] SweepPose  
+std_msgs/Float64 Xcentre  
 ---
 # Define the result
 std_msgs/Bool recognised
