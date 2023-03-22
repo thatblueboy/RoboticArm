@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
+
 import rospy
 from geometry_msgs.msg import Point
 import roslib
-roslib.load_manifest('my_pkg_name')
+roslib.load_manifest('robotic_arm_quark')
 import actionlib
 from robotic_arm_quark.msg import SweepAction
 from std_msgs.msg import Float64MultiArray, Bool, Float64
@@ -12,10 +14,10 @@ class sweep_server:
   def __init__(self):
     self.server = actionlib.SimpleActionServer('sweep', SweepAction, self.execute, False)
     self.server.start()
-    self.goalpose = [0, 0, 0, 0, 0]# to be defined
-  
+    
   def execute(self, goal):
       Controller()
+      
 
 class Controller:
    def __init__(self,array):

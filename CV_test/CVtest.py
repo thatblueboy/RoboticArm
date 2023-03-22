@@ -66,6 +66,7 @@ class ComputerVision():
                 cv2.circle(frame, (cx, cy), 5, (150, 0, 240), -1)
                 current = Float64MultiArray()
                 current.data = [cx, cy]
+                # rospy.loginfo('%i'%cx)
                 self.pub.publish(current)
                 # print(cx,cy)
 

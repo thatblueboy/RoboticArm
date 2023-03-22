@@ -118,37 +118,10 @@ def visualServey():
 
 
 def mastercontroller():
-    while not rospy.is_shutdown():
-        result = goHomeServer()
-        if result.Reached.data == True:
-            print("Reached Home pose")
-
-        sweep_server()
-        print("successful sweep")
-
-        set_top_Server()
-        print("successful setTopAction")
-
+    
         goAhead_Server()
         print("successful goAheadAction")
 
-        visualServey()
-
-        goDown_server()
-        print("successful go_Down")
-
-        goal = [0]
-        grip_server(goal)
-        print("successful gripAction")
-        goHomeServer()
-        print("successful goAhead call2")
-        goDown_server()
-        print("successful go_Down call2")
-        goal = [1]
-        grip_server(goal)
-        print("successful gripAction call2")
-        goHomeServer()
-        print("successful goAhead call3")
 
 
 if __name__ == '__main__':

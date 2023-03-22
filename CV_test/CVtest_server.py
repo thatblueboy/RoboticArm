@@ -36,7 +36,7 @@ class CVtestServer:
         goal = [x, y]
         
         # print('execute')
-        # Controller(goal)
+        Controller(goal)
 
         # # need to add a result and publish it back
         rospy.loginfo('%s: Succeeded' % "CVtestserver")
@@ -73,9 +73,12 @@ class Controller():
             'CV_pidx/state', Float64, queue_size=10)
         self.statePublisher2 = rospy.Publisher(
             'CV_pidy/state', Float64, queue_size=10)
+        
         rospy.Subscriber('/feedback', Float64MultiArray, self.sendToPID)
 
         while not rospy.is_shutdown():
+            rate.sleep() # Sleeps for 1/rate sec
+
 
             if self.reached():
                 rospy.loginfo('reached')
@@ -88,10 +91,15 @@ class Controller():
         # rospy.spin()
 
     def reached(self):
-        rospy.loginfo('x diff is %i' % (self.x - self.goal[0]))
-        rospy.loginfo(self.goal)
+        rospy.loginfo('x is %i' % (self.x))
+        rospy.loginfo('xgoal is %i' % (self.goal[0]))
 
-        if abs((self.x - self.goal[0])) < 10 and abs((self.y - self.goal[1])) < 10:
+        rospy.loginfo('x diff is %i' % (self.x - self.goal[0]))
+        # rospy.loginfo(self.goal)
+
+        # if abs((self.x - self.goal[0])) < 10 and abs((self.y - self.goal[1])) < 10:
+        if abs((self.x - self.goal[0])) < 10:
+
             return True
         else:
             return False
@@ -100,10 +108,15 @@ class Controller():
         print('hello')
 
     def sendToPID(self, coords):
+        # print(coords.data[0], coords.data[1])
+        
+        # rate.sleep() # Sleeps for 1/rate sec
 
-        rospy.loginfo('sending coordinates to pid')
+
+        # rospy.loginfo('sending coordinates to pid')
         self.x = coords.data[0]
         self.y = coords.data[1]
+        # print('self x and y are', self.x, self.y)
         self.statePublisher1.publish(self.x)
         self.statePublisher2.publish(self.y)
         self.setpointPublisher1.publish(self.goal[0])
@@ -112,5 +125,7 @@ class Controller():
 
 if __name__ == '__main__':
     rospy.init_node('CV_test')
+    rate = rospy.Rate(1)
+
     server = CVtestServer()
-0
+

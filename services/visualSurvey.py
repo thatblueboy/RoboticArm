@@ -6,7 +6,7 @@ import rospy
 from geometry_msgs.msg import Point
 from std_msgs.msg import Bool, Float64, Float64MultiArray
 
-from robotic_arm_quark.msg import visualServeyAction
+from robotic_arm_quark.msg import visualSurveyAction
 
 roslib.load_manifest('my_pkg_name')
 
@@ -20,7 +20,7 @@ roslib.load_manifest('my_pkg_name')
 class visualSurvey_server:
     def __init__(self):
         self.server = actionlib.SimpleActionServer(
-            'visualSurvey_server', visualServeyAction, self.execute, False)
+            'visualSurvey_server', visualSurveyAction, self.execute, False)
         self.server.start()
 
     def execute(self, goal):
