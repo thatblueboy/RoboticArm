@@ -4,15 +4,15 @@
 
 
     <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
+    <node name="goDown" pkg="robotic_arm_quark" type="goDown.py" output="screen" />
+    <node name="goHome" pkg="robotic_arm_quark" type="goHome.py" output="screen" />
+    <node name="grip" pkg="robotic_arm_quark" type="grip.py" output="screen" />
+    <node name="setTop" pkg="robotic_arm_quark" type="setTop.py" output="screen" />
+    <node name="visualSurvey" pkg="robotic_arm_quark" type="visualSurvey.py" output="screen" />
+    <!-- <node name="CV" pkg="robotic_arm_quark" type="CV.py" output="screen" /> -->
+    <!-- <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
     <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
-    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" />
+    <node name="goAhead" pkg="robotic_arm_quark" type="goAhead.py" output="screen" /> -->
 
 
     <node name="masterController" pkg="robotic_arm_quark" type="masterController.py"

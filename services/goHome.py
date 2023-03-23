@@ -20,7 +20,7 @@ class goHomeServer:
 
     def execute(self, goal):
 
-        Controller(goal.homePose)
+        Controller(goal.goalPose)
         self.result.Reached.data = True
 
         self.server.set_succeeded(self.result)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import math
 
 import actionlib
@@ -8,7 +9,7 @@ from std_msgs.msg import Bool, Float64, Float64MultiArray
 
 from robotic_arm_quark.msg import visualSurveyAction
 
-roslib.load_manifest('my_pkg_name')
+roslib.load_manifest('robotic_arm_quark')
 
 
 # subscribe to /feedback coming from camera , this provides x and y of contour appearing in frame. apply individual pids for

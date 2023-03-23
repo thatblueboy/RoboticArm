@@ -3,7 +3,7 @@ import rospy
 from geometry_msgs.msg import Point
 from std_msgs.msg import Float64MultiArray, Bool, Float64
 import roslib
-roslib.load_manifest('my_pkg_name')
+roslib.load_manifest('robotic_arm_quark')
 import actionlib
 from robotic_arm_quark.msg import setTopAction
 

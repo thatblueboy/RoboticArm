@@ -44,11 +44,11 @@ def goHomeServer():
         'home_theta_2'), rospy.get_param('home_theta_3'), rospy.get_param('home_theta_4'), rospy.get_param('home_theta_5'), rospy.get_param('home_theta_6')
 
     goal = robotic_arm_quark.msg.goHomeGoal()
-    goal = [theta1, theta2, theta3, theta4, theta5, theta6]
+    goal.goalPose = [theta1, theta2, theta3, theta4, theta5, theta6]
     client.send_goal(goal)
     client.wait_for_result()
 
-    return client.getresult()
+    return client.get_result()
 
 
 def sweep_server():
@@ -85,13 +85,13 @@ def set_top_Server():
     theta1.data, theta2.data, theta3.data, theta4.data, theta5.data, theta6.data = rospy.get_param('top_theta_1'), rospy.get_param(
         'top_theta_2'), rospy.get_param('top_theta_3'), rospy.get_param('top_theta_4'), rospy.get_param('top_theta_5'), rospy.get_param('top_theta_6')
 
-    goal = robotic_arm_quark.msg.goHomeGoal()
-    goal = [theta1, theta2, theta3, theta4, theta5, theta6]
+    goal = robotic_arm_quark.msg.setTopGoal()
+    goal.stopPose = [theta1, theta2, theta3, theta4, theta5, theta6]
     client.send_goal(goal)
 
     client.wait_for_result()
     # result = client.getresult()   then return result
-    return client.getresult()
+    return client.get_result()
 
 
 def goAhead_Server():
