@@ -108,7 +108,7 @@ class Controller():
         # rospy.loginfo('sending coordinates to pid')
         self.x = coords.data[0]
         if self.x == -1:
-            pass
+            rospy.loginfo('object not in frame')
 
         else:
             # print('self x and y are', self.x, self.y)

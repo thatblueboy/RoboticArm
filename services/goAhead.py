@@ -9,6 +9,7 @@ from geometry_msgs.msg import Point
 from std_msgs.msg import Bool, Float64, Float64MultiArray
 
 from robotic_arm_quark.msg import goAheadAction
+import math
 
 roslib.load_manifest('robotic_arm_quark')
 
@@ -34,14 +35,15 @@ class goAhead_Server:
 
 
 class goAhead():
+
     def __init__(self, l1, l2):
         rospy.loginfo('in goAhead class')
-
+        self.theta = [0,0]
         self.enable = Bool()
         self.enable = False
         self.reached = False
-        self.theta1 = 0
-        self.theta2 = 0
+        # self.theta1 = 0
+        # self.theta2 = 0
         self.l1 = l1
         self.l2 = l2
         self.t = 0.5
@@ -50,21 +52,20 @@ class goAhead():
         self.set = 0
         enable = Bool()
         enable = True
+        self.x = rospy.get_param('x')
+        self.y = rospy.get_param('z')  # z is height in param
 
         self.sub2 = rospy.Subscriber('/feedback', Float64, self.callback1)
 
-        self.SubState2 = rospy.Subscriber(
-            '/motor2/state', Float64, self.getState2)
-        self.SubState3 = rospy.Subscriber(
-            '/motor3/state', Float64, self.getState3)
+        # self.SubState2 = rospy.Subscriber(
+        #     '/motor2/state', Float64, self.getState2)
+        # self.SubState3 = rospy.Subscriber(
+        #     '/motor3/state', Float64, self.getState3)
 
-       
         self.enableMotor2 = rospy.Publisher(
             '/motor2/pid_enable', Bool, queue_size=10)
         self.enableMotor3 = rospy.Publisher(
             '/motor3/pid_enable', Bool, queue_size=10)
-
-        
 
         self.enableMotor2.publish(enable)
         self.enableMotor3.publish(enable)
@@ -75,20 +76,32 @@ class goAhead():
             '/motor3/setpoint', Float64, queue_size=10)
 
         rospy.loginfo('about to enter while loop')
-        while not rospy.is_shutdown:
+        while not rospy.is_shutdown():
+            rate.sleep()
             rospy.loginfo('in loop')
             if self.reached:
-                # exit from class
-                rospy.set_param('/x', self.x)
+                #get thetas from /motor2/state and /motor3/state by subscribing ONCE(get one message)
+                # calculate x from this data and set the param to this value
+                self.fk()
 
+                rospy.set_param('/x', x)
                 break
 
-    def getState2(self, theta2):
-        self.theta2 = theta2
+        rospy.loginfo('loop ended')
+    # def getState2(self, theta2):
+    #     self.theta2 = theta2
 
-    def getState3(self, theta3):
-        self.theta3 = theta3
-
+    # def getState3(self, theta3):
+    #     self.theta3 = theta3
+    def fk(self,l1,l2):
+        rospy.Subscriber("/motor2/state", Float64, self.callback_theta1)
+        rospy.Subscriber("/motor3/state", Float64, self.callback_theta2)
+        self.x = (l1 + (l2*math.cos(self.theta[1]))*math.cos(self.theta[0])) 
+        self.y = (l1 + (l2*math.cos(self.theta[1]))*math.sin(self.theta[0]))
+    def callback_theta1(self,data):
+        self.theta[0] = data.data
+    def callback_theta2(self,data):
+        self.theta[1] = data.data
     def callback1(self, data):
         coords = data.data
         self.set = coords[1]
@@ -97,7 +110,7 @@ class goAhead():
     def calculate(self):
         # IK
         # if out of frame
-        print('x %i'%self.set)
+        print('x %i' % self.set)
         if self.set == -1:
             theta2 = acos(((self.x*self.x)+(self.y*self.y) -
                           (self.l2*self.l2)-(self.l1*self.l1))/(2*self.l1*self.l2))
@@ -122,5 +135,7 @@ class goAhead():
 
 if __name__ == '__main__':
     rospy.init_node('goahead_server')
+    rate = rospy.Rate(1)
+
     server = goAhead_Server()
     rospy.spin()

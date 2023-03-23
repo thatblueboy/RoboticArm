@@ -57,6 +57,7 @@ class ComputerVision():
         cnt = imutils.grab_contours(cnt)
         
         # rospy.loginfo('length of cnt array is %i' %len(cnt))
+
         if len(cnt) == 0:
             cx = cy = -1
             current = Float64MultiArray()
@@ -68,22 +69,21 @@ class ComputerVision():
 
         for c in cnt:
             area = cv2.contourArea(c)
+    
             if area > 500:
                 cv2.drawContours(frame, [c], -1, (0, 255, 0), 3)
                 M = cv2.moments(thresh)
                 cx = int(M["m10"] / M["m00"])
                 cy = int(M["m01"]/M["m00"])
-
                 cv2.circle(frame, (cx, cy), 5, (150, 0, 240), -1)
-                current = Float64MultiArray()
-                current.data = [cx, cy]
-                # rospy.loginfo('%i'%cx)
-                self.pub.publish(current)
-
+                
                 # print(cx,cy)
             else:
-                pass
-                # cx, cy = -1, -1
+                cx, cy = -1, -1
+            current = Float64MultiArray()
+            current.data = [cx, cy]
+            # rospy.loginfo('%i'%cx)
+            self.pub.publish(current)   
          
 
         cv2.imshow("Window", frame)

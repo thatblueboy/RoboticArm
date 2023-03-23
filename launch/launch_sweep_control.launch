@@ -3,7 +3,7 @@
 <launch>
 
 
-  <node name="Sweep" pkg="robotic_arm_quark" type="sweep.py" output="screen" />
+  <node name="Sweep" pkg="robotic_arm_quark" type="goDown.py" output="screen" />
 
   <node name="masterController" pkg="robotic_arm_quark" type="masterController.py"
     output="screen" />

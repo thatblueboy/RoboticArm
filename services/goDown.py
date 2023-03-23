@@ -1,28 +1,131 @@
+#!/usr/bin/env python3
+
+from math import acos, asin, atan, cos, sin, tan
+
+import actionlib
 import roslib
 import rospy
+import math
 from geometry_msgs.msg import Point
-from std_msgs.msg import Bool, Float64
+from std_msgs.msg import Bool, Float64, Float64MultiArray
 
-roslib.load_manifest('my_pkg_name')
-import actionlib
-from robotic_arm_quark.msg import goDownAction
+from robotic_arm_quark.msg import goAheadAction
 
-#  take ik from data from a rostopic, assume this provides x, y in 2d vertical plane, take y as state for pid and publish to pid 
-# in callback function. assume setpoint for y is a rosparam(pick_height)
+roslib.load_manifest('robotic_arm_quark')
 
-class goDown_server:
-  def __init__(self):
-    self.server = actionlib.SimpleActionServer('go_Down', goDownAction, self.execute, False)
-    self.server.start()
+# take input from CV on /feedback, in callback, publish a constant value(r(radial velocity, as float64)) to a topic
+# once a contour is found in feed and it has travelled sufficient distance into the frame, publish velocity as 0, service successful
 
-    self.pose = [0, 0, 0, 0, 0]
 
-  def execute(self, goal):
-    # write code here
-    self.server.set_succeeded()
+class goAhead_Server:
+    def __init__(self):
+        self.server = actionlib.SimpleActionServer(
+            'go_Ahead', goAheadAction, self.execute, False)
+        self.server.start()
+
+        rospy.spin()
+
+    def execute(self, goal):
+        rospy.loginfo('in excute')
+        l1 = rospy.get_param('/link1')
+        l2 = rospy.get_param('/link2')
+        goAhead(l1, l2)
+
+        self.server.set_succeeded()
+
+
+class goAhead():
+    def __init__(self, l1, l2):
+        rospy.loginfo('in goAhead class')
+        self.reached = False
+        self.enable = Bool()
+        self.enable = False
+        self.reached = False
+        self.theta1 = 0
+        self.theta2 = 0
+        self.l1 = l1
+        self.l2 = l2
+        self.t = 0.5
+        self.theta1 = 0
+        self.theta2 = 0
+        self.set = 0
+        enable = Bool()
+        enable = True
+        self.x = rospy.get_param('x')
+        self.y = rospy.get_param('z')  # z is height in param
+
+        self.goaly = rospy.get_param('pick_height')
+
+        self.sub2 = rospy.Subscriber('/feedback', Float64, self.callback1)
+
+        self.SubState2 = rospy.Subscriber(
+            '/motor2/state', Float64, self.getState2)
+        self.SubState3 = rospy.Subscriber(
+            '/motor3/state', Float64, self.getState3)
+
+        self.enableMotor2 = rospy.Publisher(
+            '/motor2/pid_enable', Bool, queue_size=10)
+        self.enableMotor3 = rospy.Publisher(
+            '/motor3/pid_enable', Bool, queue_size=10)
+
+        self.enableMotor2.publish(enable)
+        self.enableMotor3.publish(enable)
+
+        self.setpointPublisherMotor2 = rospy.Publisher(
+            '/motor2/setpoint', Float64, queue_size=10)
+        self.setpointPublisherMotor3 = rospy.Publisher(
+            '/motor3/setpoint', Float64, queue_size=10)
+
+        rospy.loginfo('about to enter while loop')
+        while not rospy.is_shutdown():
+
+            rospy.loginfo('in loop')
+            if self.reached:
+                break
+            else:
+                self.calculate()
+
+        rospy.loginfo('loop ended')
+
+    
+   
+
+    # def callback1(self, data):
+    #     coords = data.data
+    #     self.set = coords[1]
+    #     self.calculate()
+
+    def calculate(self):
+        # IK
+        # if out of frame
+        y = self.ik(self.theta1, theta2)
+        if (y - self.goaly) > 0.2:
+            theta2 = acos(((self.x*self.x)+(self.y*self.y) -
+                          (self.l2*self.l2)-(self.l1*self.l1))/(2*self.l1*self.l2))
+            theta1 = atan(self.y/self.x)-atan(self.l2 *
+                                              sin(self.theta2)/(self.l1+self.l2*cos(self.theta2)))
+            self.goTo(theta1, theta2)
+            self.y = + 0.5
+        else:
+            self.reached = True
+
+    def goTo(self, theta1, theta2):
+        self.setpointPublisherMotor2.publish(theta1)
+        self.setpointPublisherMotor3.publish(theta2)
+        while (self.AngleNotReached(theta1, theta2)):
+            rate.sleep()
+
+        # publish setpoint as theta1 and theta2
+
+    def AngleNotReached(self, theta1, theta2):
+        if abs(self.theta1 - theta1) < 0.01 and abs(self.theta2 - theta2) < 0.01:
+            return True
+        return False
 
 
 if __name__ == '__main__':
-  rospy.init_node('do_dishes_server')
-  server = goDown_server()
-  rospy.spin()
+    rospy.init_node('goahead_server')
+    rate = rospy.Rate(10)
+
+    server = goAhead_Server()
+    rospy.spin()

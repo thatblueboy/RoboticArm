@@ -44,9 +44,9 @@ class Controller:
         self.dt = 0.5
 
         self.velocity = rospy.Subscriber(
-            '/cvY/control_effort', Float64, self.VelLinear)
+            '/CV_pidx_visualsurvey/control_effort', Float64, self.VelLinear)
         self.velocity = rospy.Subscriber(
-            '/cvX/control_effort', Float64, self.VelAngular)
+            '/CV_pidy/control_effort', Float64, self.VelAngular)
         self.SubState2 = rospy.Subscriber(
             '/motor2/state', Float64, self.getState2)
         self.SubState3 = rospy.Subscriber(
@@ -67,7 +67,7 @@ class Controller:
 
         # FK
         self.x = rospy.get_param('/x')
-        self.z = rospy.get_param('/y')
+        self.z = rospy.get_param('/z')
 
         self.centre_x = Float64()
         self.centre_y = Float64()
@@ -82,14 +82,14 @@ class Controller:
         self.enableCVy.publish(enable)
 
         self.setpointPublisherCVx = rospy.Publisher(
-            '/cvX/setpoint', Float64, queue_size=10)
+            '/CV_pidx_visualsurvey/setpoint', Float64, queue_size=10)
         self.setpointPublisherCVy = rospy.Publisher(
-            '/cvY/setpoint', Float64, queue_size=10)
+            '/CV_pidy/setpoint', Float64, queue_size=10)
 
         self.statePublisherCVx = rospy.Publisher(
-            '/cvX/state', Float64, queue_size=10)
+            '/CV_pidx_visualsurvey/state', Float64, queue_size=10)
         self.statePublisherCVy = rospy.Publisher(
-            '/cvY/state', Float64, queue_size=10)
+            '/CV_pidy/state', Float64, queue_size=10)
 
         while not rospy.is_shutdown:
             rospy.Subscriber('/feedback', Float64MultiArray, self.sendToPID1)

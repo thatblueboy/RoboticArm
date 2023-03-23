@@ -47,7 +47,7 @@ def goHomeServer():
     goal = [theta1, theta2, theta3, theta4, theta5, theta6]
     client.send_goal(goal)
     client.wait_for_result()
-   
+
     return client.getresult()
 
 
@@ -59,10 +59,9 @@ def sweep_server():
     # x.data = rospy.get_param('camfeed_centre_x')
     x.data = 320
     goal.Xcentre = x
-    
-    
+
     client.wait_for_server()
-   
+
     rospy.loginfo('server found')
     client.send_goal(goal)
 
@@ -76,7 +75,6 @@ def set_top_Server():
         'set_Top', robotic_arm_quark.msg.setTopAction)
     client.wait_for_server()
 
-    
     theta1 = Float64()
     theta2 = Float64()
     theta3 = Float64()
@@ -86,7 +84,7 @@ def set_top_Server():
 
     theta1.data, theta2.data, theta3.data, theta4.data, theta5.data, theta6.data = rospy.get_param('top_theta_1'), rospy.get_param(
         'top_theta_2'), rospy.get_param('top_theta_3'), rospy.get_param('top_theta_4'), rospy.get_param('top_theta_5'), rospy.get_param('top_theta_6')
-    
+
     goal = robotic_arm_quark.msg.goHomeGoal()
     goal = [theta1, theta2, theta3, theta4, theta5, theta6]
     client.send_goal(goal)
@@ -94,6 +92,7 @@ def set_top_Server():
     client.wait_for_result()
     # result = client.getresult()   then return result
     return client.getresult()
+
 
 def goAhead_Server():
     client = actionlib.SimpleActionClient(
@@ -133,36 +132,36 @@ def visualServey():
 def mastercontroller():
     while not rospy.is_shutdown():
         rospy.loginfo("client started")
-        # result = goHomeServer()
-        # if result.Reached.data == True:
-        #     print("Reached Home pose")
+        result = goHomeServer()
+        if result.Reached.data == True:
+            print("Reached Home pose")
 
-        # sweep_server()
-        # print("successful sweep")
+        sweep_server()
+        print("successful sweep")
 
-        # set_top_Server()
-        # print("successful setTopAction")
+        set_top_Server()
+        print("successful setTopAction")
 
         goAhead_Server()
         print("successful goAheadAction")
 
-        # visualServey()
+        visualServey()
 
-        # goDown_server()
-        # print("successful go_Down")
+        goDown_server()
+        print("successful go_Down")
 
-        # goal = [0]
-        # grip_server(goal)
-        # print("successful gripAction")
-        # goHomeServer()
-        # print("successful goAhead call2")
-        # goDown_server()
-        # print("successful go_Down call2")
-        # goal = [1]
-        # grip_server(goal)
-        # print("successful gripAction call2")
-        # goHomeServer()
-        # print("successful goAhead call3")
+        goal = [0]
+        grip_server(goal)
+        print("successful gripAction")
+        goHomeServer()
+        print("successful goAhead call2")
+        goDown_server()
+        print("successful go_Down call2")
+        goal = [1]
+        grip_server(goal)
+        print("successful gripAction call2")
+        goHomeServer()
+        print("successful goAhead call3")
 
 
 if __name__ == '__main__':

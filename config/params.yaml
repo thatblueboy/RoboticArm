@@ -5,8 +5,8 @@ pick_height: 10
 link1: 10
 link2: 10
 
-x: 0
-z: 5
+x: 10
+z: 15
 
 home_theta_1: 0
 home_theta_2: 0
