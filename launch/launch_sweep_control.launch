@@ -3,7 +3,9 @@
 <launch>
 
 
-  <node name="Sweep" pkg="robotic_arm_quark" type="goDown.py" output="screen" />
+  <node name="Sweep" pkg="robotic_arm_quark" type="sweep.py" output="screen" />
+  <node name="Envelope" pkg="robotic_arm_quark" type="Envelope.py" output="screen" />
+
 
   <node name="masterController" pkg="robotic_arm_quark" type="masterController.py"
     output="screen" />
@@ -16,7 +18,7 @@
   </include>
   <include file="$(find usb_cam)/launch/usb_cam-test.launch">
   </include>
-
+ 
 
 
 </launch>

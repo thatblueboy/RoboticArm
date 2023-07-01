@@ -57,15 +57,15 @@ class Controller():
         enable = True
         # self.override = rospy.Publisher()  need to override pid if object is not in range
         self.cam1 = rospy.Publisher(
-            'CV_pidx/pid_enable', Bool, queue_size=10)
+            'CV_pidx_sweep/pid_enable', Bool, queue_size=10)
 
         self.cam1.publish(enable)
 
         self.setpointPublisher1 = rospy.Publisher(
-            'CV_pidx/setpoint', Float64, queue_size=10)
+            'CV_pidx_sweep/setpoint', Float64, queue_size=10)
 
         self.statePublisher1 = rospy.Publisher(
-            'CV_pidx/state', Float64, queue_size=10)
+            'CV_pidx_sweep/state', Float64, queue_size=10)
         self.statePublisher2 = rospy.Publisher(
             'CV_pidy/state', Float64, queue_size=10)
 

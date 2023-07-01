@@ -76,14 +76,14 @@ class ComputerVision():
                 cx = int(M["m10"] / M["m00"])
                 cy = int(M["m01"]/M["m00"])
                 cv2.circle(frame, (cx, cy), 5, (150, 0, 240), -1)
-                
+                current = Float64MultiArray()
+                current.data = [cx, cy]
+                # rospy.loginfo('%i'%cx)
+                self.pub.publish(current)   
                 # print(cx,cy)
-            else:
-                cx, cy = -1, -1
-            current = Float64MultiArray()
-            current.data = [cx, cy]
-            # rospy.loginfo('%i'%cx)
-            self.pub.publish(current)   
+            # else:
+            #     cx, cy = -1, -1
+           
          
 
         cv2.imshow("Window", frame)
